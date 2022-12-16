@@ -1,73 +1,34 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# 🔔 Notification Service
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Microsserviço com propósito de auxiliar outros serviços a emitirem notificações para usuários. É possível que serviços externos se comuniquem com este microsseviço por uma API REST ou por meio de mensageria utilizando o Apache Kafka.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Instalação
+- Clone o projeto na sua máquina com o comando `git clone https://github.com/JoaoPedroLuz57/notification-service.git`
+- Instale as dependências com o comando `npm install`
 
-## Description
+## Executando a aplicação
+- Para rodar em modo de desenvolvimento utilize o comando `npm run start:dev`
+- Para realizar os testes unitários utilize o comando `npm run test`
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Rotas da aplicação
 
-## Installation
+- (GET) Listar todas as notificações do usuário: `http://localhost:3000/notifications/:recipientId` 
+- (GET) Contar o total de notificações do usuário: `localhost:3000/notifications/:recipientId/count`
+- (POST) Criar uma nova notificação: `http://localhost:3000/notifications`
+  passando os atributos: 
+  ```json
+   {
+    "recipientId": "uuid",
+    "content": "some content",
+    "category": "category name"
+   }
+   ```
+- (PATCH) Marcar notificação como lida: `http://localhost:3000/notifications/:id/read`
+- (PATCH) Marcar notificação como não lida: `http://localhost:3000/notifications/:id/unread`
+- (PATCH) Cancelar o envio de uma notificação: `http://localhost:3000/notifications/:id/cancel`
 
-```bash
-$ npm install
-```
+# Utilizando mensageria com Apache Kafka
 
-## Running the app
-
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
-```
-
-## Test
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+- É necessário que tenha um cluster do Apache Kafka para utilizar esta funcionalidade. Pode-se subir um utilizando o Docker ou, caso queria, pode-se criar um gratuitamente no [upstash](https://upstash.com/).    
+- Com o cluster criado substitua as informações necessárias no arquivo `src/infra/messaging/kafka/kafka-consumer.service.ts`
+- Um exemplo de produtor de eventos (notificações) pode ser visto no meu repositório [notification-producer](https://github.com/JoaoPedroLuz57/notification-producer).
