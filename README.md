@@ -42,5 +42,5 @@ npm run dev
 # Utilizando mensageria com Apache Kafka
 
 - É necessário que tenha um cluster do Apache Kafka para utilizar esta funcionalidade. Pode-se subir um utilizando o Docker ou, caso queria, pode-se criar um gratuitamente no [upstash](https://upstash.com/).    
-- Com o cluster criado substitua as informações necessárias no arquivo `src/infra/messaging/kafka/kafka-consumer.service.ts`
+- Com o cluster criado substitua as informações necessárias no arquivo `src/infra/messaging/kafka/kafka-consumer.service.ts`.
 - Um exemplo de produtor de eventos (notificações) pode ser visto no meu repositório [notification-producer](https://github.com/JoaoPedroLuz57/notification-producer).
